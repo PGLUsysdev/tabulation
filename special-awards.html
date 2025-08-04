@@ -1,0 +1,158 @@
+<?php
+
+require_once 'authentication.php';
+
+$page = "special_awards";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/bootbox-fix.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="js/rangeslider/rangeslider.css">
+    <title>PGLU - Tabulation System</title>
+  </head>
+  <body class="app sidebar-mini" ng-app="specialAwards" ng-controller="specialAwardsCtrl" account-profile>
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index.html"><img class="page-logo" src="logo/ts.png"><span class="page-logo-text">Tabulation</span></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right" drop-down></ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{profile.picture}}" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">{{profile.user}}</p>
+          <p class="app-sidebar__user-designation">{{profile.description}}</p>
+        </div>
+      </div>
+	  
+	<?php require_once 'sidebar-menu.php'; ?>
+    </aside>
+	
+    <main class="app-content">
+	
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-trophy"></i> Manage Special Awards ({{activeEvent.description}})</h1>
+          <p>{{views.title}}</p>		  
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-trophy fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="special-awards.html">Manage Special Awards</a></li>
+        </ul>
+      </div>
+	  
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="input-group mb-3">
+					  <input type="text" class="form-control" placeholder="Search" ng-model="search">
+					  <div class="input-group-append">
+						<span class="input-group-text"><i class="fa fa-search"></i></span>
+					  </div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="float-right">
+						<i class="fa fa-plus fa-lg" style="cursor: pointer;" ng-click="specialAwards.special_award(this,null)"></i>
+					</div>					
+				</div>
+			</div>
+			<div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Event</th>
+                    <th>Description</th>
+                    <th>Winners</th>
+                    <th>Criteria</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="a in awards | filter:search">
+                    <td>{{a.id}}</td>
+                    <td>{{a.event_id}}</td>
+                    <td>{{a.description}}</td>
+                    <td>{{a.winners}}</td>
+                    <td ng-bind-html="a.criteria"></td>
+                    <td>{{(a.is_shown)?'Yes':'No'}}</td>
+                    <td>
+						<button type="button" class="btn btn-primary" ng-click="specialAwards.special_award(this,a)"><i class="fa fa-search"></i></button>
+						<button type="button" class="btn btn-danger" ng-click="specialAwards.delete(this,a)"><i class="fa fa-times"></i></button>
+					</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>			
+          </div>
+        </div>
+      </div>
+	  
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>
+	<script src="js/growl/jquery.bootstrap-growl.min.js"></script>	
+	<script src="js/blockui/jquery.blockUI.js"></script>	
+	<script src="jspdf/jspdf.min.js"></script>	
+	<script src="jspdf/jspdf.plugin.autotable.js"></script>	
+	<script src="js/rangeslider/rangeslider.js"></script>
+    <!-- Page specific javascripts-->
+  <!-- angularjs -->
+  <script src="angular/angular.min.js"></script>
+  <script src="angular/angular-route.min.js"></script>
+  <script src="angular/angular-sanitize.min.js"></script>
+  <script src="angular/ui-bootstrap-tpls-3.0.0.min.js"></script>
+  <!-- modules -->
+  <script src="modules/bootstrap-modal.js"></script>
+  <script src="modules/account.js"></script>
+  <script src="modules/validate.js"></script>
+  <script src="modules/growl.js"></script>
+  <script src="modules/blockui.js"></script>
+  <script src="modules/tooltip.js"></script>
+  <script src="modules/notifications.js"></script>
+  <script src="modules/jspdf.js"></script>
+  <script src="modules/active-event.js"></script>
+  <script src="modules/special-awards.js"></script>
+  <!-- controller -->
+  <script src="controllers/special-awards.js"></script>
+  </body>
+</html>

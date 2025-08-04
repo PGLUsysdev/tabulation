@@ -1,0 +1,141 @@
+<?php
+
+require_once 'authentication.php';
+
+require_once 'index-update.php';
+
+$page = "dashboard";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/bootbox-fix.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.numpad.css">
+	<!-- BEGIN jsreports-->	
+	<link href="jsreports/css/tomorrow-night-eighties.css" rel="stylesheet" type='text/css' />	
+	<link href="jsreports/css/style.css" rel="stylesheet" type="text/css" />
+	<!-- END jsreports-->	
+    <title>PGLU - Tabulation System</title>
+  </head>
+  <body class="app sidebar-mini sidenav-closed" ng-app="dashboard" ng-controller="dashboardCtrl" account-profile>
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index.html"><img class="page-logo" src="logo/ts.png"><span class="page-logo-text">Tabulation</span></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+		<li class="app-search">
+          <span class="badge badge-pill" ng-class="{'badge-info': network.online, 'badge-danger': !network.online}">{{(network.online)?'ONLINE':'OFFLINE'}}</span>
+        </li>	  
+        <li class="dropdown" notifications></li>
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right" drop-down></ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{profile.picture}}" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">{{profile.user}}</p>
+          <p class="app-sidebar__user-designation">{{profile.description}}</p>
+        </div>
+      </div>
+	  
+	<?php require_once 'sidebar-menu.php'; ?>
+    </aside>
+	
+    <main class="app-content">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-dashboard"></i> Dashboard ({{activeEvent.description}})</h1>
+          <p>{{views.title}}</p>		  
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        </ul>
+      </div>
+	  
+	  <?php require_once 'judge.php'; ?>
+	  
+	  <?php require_once 'portions.php'; ?>
+	  
+	  <?php require_once 'rounds.php'; ?>
+	  
+	  <?php require_once 'contestants.php'; ?>
+	  
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>
+	<script src="js/growl/jquery.bootstrap-growl.min.js"></script>	
+	<script src="js/blockui/jquery.blockUI.js"></script>	
+	<!-- <script src="jspdf/jspdf.min.js"></script>	 -->
+	<script src="jspdf/jspdf.min-1.5.3.js"></script>	
+	<script src="jspdf/jspdf.plugin.autotable-3.2.11.js"></script>		
+	<script src="js/jquery.numpad.js<?=$index_update?>"></script>
+	<!-- jsreports -->
+	<script type="text/javascript" src="jsreports/js/highlight.pack.js"></script>
+	<script type="text/javascript" src="jsreports/js/jsreports-all.min.js"></script>	
+	<script type="text/javascript">
+		// Set NumPad defaults for jQuery mobile. 
+		// These defaults will be applied to all NumPads within this document!
+		$.fn.numpad.defaults.gridTpl = '<table class="table modal-content"></table>';
+		$.fn.numpad.defaults.backgroundTpl = '<div class="modal-backdrop in"></div>';
+		$.fn.numpad.defaults.displayTpl = '<input type="text" class="form-control" />';
+		$.fn.numpad.defaults.buttonNumberTpl =  '<button type="button" class="btn btn-default"></button>';
+		$.fn.numpad.defaults.buttonFunctionTpl = '<button type="button" class="btn" style="width: 100%;"></button>';
+		$.fn.numpad.defaults.onKeypadCreate = function(){$(this).find('.done').addClass('btn-primary');};
+	</script>
+    <!-- Page specific javascripts-->
+  <!-- angularjs -->
+  <script src="angular/angular.min.js"></script>
+  <script src="angular/angular-route.min.js"></script>
+  <script src="angular/angular-sanitize.min.js"></script>
+  <script src="angular/ui-bootstrap-tpls-3.0.0.min.js"></script>
+  <!-- modules -->
+  <script src="modules/bootstrap-modal.js"></script>
+  <script src="modules/account.js"></script>
+  <script src="modules/validate.js"></script>
+  <script src="modules/growl.js"></script>
+  <script src="modules/blockui.js"></script>
+  <script src="modules/tooltip.js"></script>
+  <script src="modules/notifications.js"></script>
+  <script src="modules/jspdf.js"></script>
+  <script src="modules/active-event.js"></script>
+  <script src="modules/tabulator.js<?=$index_update?>"></script>
+  <script src="modules/judge.js<?=$index_update?>"></script>
+  <script src="modules/dashboard.js<?=$index_update?>"></script>
+  <script src="modules/monitoring-judge.js<?=$index_update?>"></script>  
+  <!-- controller -->
+  <script src="controllers/dashboard.js<?=$index_update?>"></script>
+  </body>
+</html>

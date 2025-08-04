@@ -1,0 +1,177 @@
+<?php
+
+require_once 'authentication.php';
+
+$page = "contestant";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="css/bootbox-fix.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>PGLU - Tabulation System</title>
+  </head>
+  <body class="app sidebar-mini" ng-app="contestant" ng-controller="contestantCtrl" account-profile>
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index.html"><img class="page-logo" src="logo/ts.png"><span class="page-logo-text">Tabulation</span></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right" drop-down></ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{profile.picture}}" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">{{profile.user}}</p>
+          <p class="app-sidebar__user-designation">{{profile.description}}</p>
+        </div>
+      </div>
+	  
+	<?php require_once 'sidebar-menu.php'; ?>
+    </aside>
+	
+    <main class="app-content">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa fa-list-ul"></i> Contestant ({{activeEvent.description}})</h1>
+          <p>{{views.option}}</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">Contestants</li>
+          <li class="breadcrumb-item"><a href="contestant.html">Contestant</a></li>
+        </ul>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+		  <div class="float-right">
+			<i class="fa fa-edit fa-lg" style="cursor: pointer; margin-right: 8px;" ng-click="app.edit(this)" ng-show="controls.btns.edit"></i>
+			<i class="fa fa-plus fa-lg" style="cursor: pointer;" ng-click="app.add(this)" ng-show="controls.btns.add"></i>
+		  </div>
+		  <div class="clearfix"></div>		  
+		    <hr>
+			<form name="form.contestant">
+				<div class="row">
+				  <div class="col-lg-4 offset-lg-8">
+					  <div class="form-group float-right">
+						<label>Active</label>
+						<div class="toggle lg">
+						  <label>
+							<input type="checkbox" ng-model="contestant.is_active" ng-checked="contestant.is_active" ng-disabled="controls.btns.ok"><span class="button-indecator"></span>
+						  </label>
+						</div>						
+					  </div>	  
+				  </div>				
+				</div>
+				<hr>			
+				<div class="row">
+				  <div class="col-lg-4 col-sm-6">
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+					  <ol class="carousel-indicators">
+						<li ng-repeat="picture in contestant.pictures" data-target="#carouselExampleIndicators" data-slide-to="{{$index}}" ng-class="{'active': $index==0}"></li>
+					  </ol>
+					  <div class="carousel-inner">
+						<div ng-repeat="picture in contestant.pictures" class="carousel-item" ng-class="{'active': $index==0}">
+						  <img class="d-block w-100" src="{{picture.src}}">
+						</div>
+					  </div>
+					</div>
+					<hr>
+					<button ng-show="contestant.id>0" class="btn btn-warning float-right" ng-click="app.pictures(this)">Pictures</button>
+					<div class="clearfix"></div>
+				  </div>				
+				  <div class="col-lg-8 col-sm-6">
+					  <div class="form-group">
+						<label>Event</label>
+						<select class="form-control" ng-class="{'is-invalid': form.contestant.event_id.$touched && form.contestant.event_id.$invalid}" name="event_id" ng-model="contestant.event_id" ng-options="event.description for event in events track by event.id" ng-disabled="controls.btns.ok" required></select>
+						<div class="form-control-feedback" ng-show="form.contestant.event_id.$touched && form.contestant.event_id.$invalid">Event is required</div>
+					  </div>
+					  <div class="form-group">
+						<label>No</label>
+						<input type="text" class="form-control" name="contestant_no" ng-model="contestant.contestant_no" ng-disabled="controls.btns.ok">
+					  </div>
+					  <div class="form-group">
+						<label>Contestant Name</label>
+						<input type="text" class="form-control" ng-class="{'is-invalid': form.contestant.contestant_name.$touched && form.contestant.contestant_name.$invalid}" name="contestant_name" ng-model="contestant.contestant_name" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.contestant.contestant_name.$touched && form.contestant.contestant_name.$invalid">Contestant name is required</div>
+					  </div>
+					  <div class="form-group">
+						<label>Description</label>
+						<input type="text" class="form-control" ng-class="{'is-invalid': form.contestant.description.$touched && form.contestant.description.$invalid}" name="description" ng-model="contestant.description" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.contestant.description.$touched && form.contestant.description.$invalid">Description is required</div>
+					  </div>
+					  <hr>
+						<div id="dz" class="text-center dz">
+							<div class="dz-message">Drop photos here or click to upload<br><small class="text-info">Prefered size: 2x3 inches</small></div>							
+						</div>					  
+					  <!-- <div class="form-group">
+						<label>FP Photo ID</label>
+						<input type="text" class="form-control" name="fb_photo_id" ng-model="contestant.fb_photo_id" ng-disabled="controls.btns.ok">
+					  </div> -->				  
+				  </div>
+				</div>
+				<hr>
+				<button class="btn btn-info float-right" type="button" ng-click="app.close()">Close</button>
+				<button class="btn btn-danger float-right" type="button" ng-click="app.cancel(this)" ng-disabled="controls.btns.cancel" style="margin-right: 5px;">Cancel</button>
+				<button class="btn btn-success float-right" type="button" ng-click="app.save(this)" ng-disabled="controls.btns.ok" style="margin-right: 5px;">Save</button>				
+				<div class="clearfix"></div>				
+			</form>
+          </div>
+        </div>
+      </div>     
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/dropzone.js"></script>	
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>
+	<script src="js/growl/jquery.bootstrap-growl.min.js"></script>	
+    <!-- Page specific javascripts-->
+  <!-- angularjs -->
+  <script src="angular/angular.min.js"></script>  
+  <script src="angular/angular-route.min.js"></script>  
+  <script src="angular/ui-bootstrap-tpls-3.0.0.min.js"></script> 
+  <!-- modules -->
+  <script src="modules/bootstrap-modal.js"></script>
+  <script src="modules/account.js"></script>
+  <script src="modules/validate.js"></script>
+  <script src="modules/growl.js"></script>
+  <script src="modules/active-event.js"></script>
+  <script src="modules/contestant.js"></script>
+  <!-- controller -->
+  <script src="controllers/contestant.js"></script>
+  </body>
+</html>

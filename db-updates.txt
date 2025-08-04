@@ -1,0 +1,1 @@
+ALTER TABLE `portions_contestants`  ADD `contestant_rank` INT NULL  AFTER `contestant_id`;

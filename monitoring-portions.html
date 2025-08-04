@@ -1,0 +1,228 @@
+<?php
+
+require_once 'authentication.php';
+
+$page = "monitoring_portions";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/bootbox-fix.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="js/rangeslider/rangeslider.css">
+    <title>PGLU - Tabulation System</title>
+  </head>
+  <body class="app sidebar-mini sidenav-closed" ng-app="monitoring" ng-controller="monitoringCtrl" account-profile>
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index.html"><img class="page-logo" src="logo/ts.png"><span class="page-logo-text">Tabulation</span></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+		<li class="app-search">
+          <span class="badge badge-pill" ng-class="{'badge-info': network.online, 'badge-danger': !network.online}">{{(network.online)?'ONLINE':'OFFLINE'}}</span>
+        </li>	  
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right" drop-down></ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{profile.picture}}" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">{{profile.user}}</p>
+          <p class="app-sidebar__user-designation">{{profile.description}}</p>
+        </div>
+      </div>
+	  
+	<?php require_once 'sidebar-menu.php'; ?>
+    </aside>
+	
+    <main class="app-content">
+	
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-laptop"></i> Monitoring ({{activeEvent.description}})</h1>
+          <p>{{views.title}}</p>		  
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-laptop fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="monitoring-portions.html">Monitoring</a></li>
+        </ul>
+      </div>
+	  
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="tile">	  
+					<h3 class="tile-title">Toggle Portion For Judges (Show/Hide)<i class="fa fa-refresh float-right" data-toggle="tooltip" data-placement="left" title="" data-original-title="Refresh" style="cursor: pointer;" ng-click="monitoring.reload(this)"></i></h3>
+					<div class="clearfix"></div>
+					<hr>
+					<div class="tile-body">
+						<form class="form-inline float-right">
+							<input class="form-control mr-sm-2" type="search" placeholder="Search" ng-model="search" aria-label="Search">
+						</form>
+						<div class="clearfix"></div>
+						<table class="table table-striped table-bordered" style="margin-top: 25px;">
+							<thead>
+								<tr>
+									<th>Id</th><th>Description</th><th>No of Contestants</th><th>No of Judges</th><th>Judges</th><th>Active?</th><th>Show?</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="p in portions | filter:search">
+									<td>{{p.id}}</td>
+									<td>{{p.description}}</td>
+									<td><a href="javascript:;" ng-click="monitoring.sortByRank(this,p)">{{p.no_of_contestants}}</a></td>									
+									<td>{{p.no_of_judges}}</td>									
+									<td><button class="btn btn-warning btn-sm" ng-click="monitoring.judges(this,p)">Manage</button></td>
+									<td>
+										<div class="toggle lg" data-toggle="tooltip" data-placement="left" title="" data-original-title="{{(p.is_shown)?'Hide':'Show'}}">
+										  <label>
+											<input type="checkbox" ng-model="p.is_shown" ng-checked="p.is_shown" ng-click="monitoring.activate(this,p)"><span class="button-indecator"></span>
+										  </label>
+										</div>										
+									</td>
+									<td>
+										<div class="toggle lg" data-toggle="tooltip" data-placement="left" title="" data-original-title="{{(p.toggle)?'Hide':'Show'}}">
+										  <label>
+											<input type="checkbox" ng-model="p.toggle" ng-checked="p.toggle" ng-click="monitoring.toggle(this,p)"><span class="button-indecator"></span>
+										  </label>
+										</div>										
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="tile">
+					<h3 class="tile-title">Judges Scores Progress<select style="width: 25%" class="form-control float-right" ng-model="monitor.portion" ng-options="p.description for p in portions track by p.id" ng-change="monitoring.selectPortion(this)"></select></h3>
+					<div class="clearfix"></div>
+					<hr>
+					<div class="tile-body">
+						<table class="table table-bordered">
+							<thead>
+								<tr><th>Id</th><th>Judge</th><th>Progress</th><th>Status</th><th>Action</th></tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="j in progress.portion">
+									<td>{{j.judge_id}}</td><td>{{j.name}}</td>
+									<td>
+										<div class="progress">
+										  <div class="progress-bar bg-danger" role="progressbar" style="width: {{j.progress}}%" aria-valuenow="{{j.progress}}" aria-valuemin="0" aria-valuemax="100">{{j.progress}}{{(j.progress>0)?'%':''}}</div>
+										</div>										
+									</td>
+									<td>{{j.status}}</td>
+									<td>
+										<i ng-show="j.status == 'Done'" class="fa fa-ban fa-lg" style="cursor: pointer; margin-right: 10px;" ng-click="monitoring.undone(this,j)" data-toggle="tooltip" data-placement="left" title="" data-original-title="Undone"></i>										
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="tile">
+					<h3 class="tile-title">Criteria progress for {{monitor.portion.description}}</h3>
+					<hr>
+					<div class="tile-body">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr><th>Id</th><th>Judge</th><th ng-repeat="ch in progress.criteria.headers">{{ch.th}}</th></tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="cj in progress.criteria.judges">
+									<td>{{cj.judge_id}}</td>
+									<td>{{cj.name}}</td>
+									<td ng-repeat="cjc in cj.criteria">{{cjc.progress}}%</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="tile">
+					<h3 class="tile-title">Utility</h3>
+					<hr>					
+					<div class="tile-body">
+						<div class="row">
+							<div class="col-lg-4">
+								<h5>Notifications</h5>
+								<button class="btn btn-danger" ng-click="monitoring.clearNotifications(this)">Clear</button>							
+							</div>
+							<div class="col-lg-4">
+								<h5>Toggles Cache</h5>
+								<button class="btn btn-danger" ng-click="monitoring.clearToggles(this)">Clear</button>							
+							</div>							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>
+	<script src="js/growl/jquery.bootstrap-growl.min.js"></script>	
+	<script src="js/blockui/jquery.blockUI.js"></script>	
+	<script src="jspdf/jspdf.min.js"></script>	
+	<script src="jspdf/jspdf.plugin.autotable.js"></script>	
+	<script src="js/rangeslider/rangeslider.js"></script>
+    <!-- Page specific javascripts-->
+  <!-- angularjs -->
+  <script src="angular/angular.min.js"></script>
+  <script src="angular/angular-route.min.js"></script>
+  <script src="angular/angular-sanitize.min.js"></script>
+  <script src="angular/ui-bootstrap-tpls-3.0.0.min.js"></script>
+  <!-- modules -->
+  <script src="modules/bootstrap-modal.js"></script>
+  <script src="modules/account.js"></script>
+  <script src="modules/validate.js"></script>
+  <script src="modules/growl.js"></script>
+  <script src="modules/blockui.js"></script>
+  <script src="modules/tooltip.js"></script>
+  <script src="modules/notifications.js"></script>
+  <script src="modules/jspdf.js"></script>
+  <script src="modules/active-event.js"></script>
+  <script src="modules/monitoring-portions.js"></script>
+  <!-- controller -->
+  <script src="controllers/monitoring-portions.js"></script>
+  </body>
+</html>

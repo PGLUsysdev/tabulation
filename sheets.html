@@ -1,0 +1,171 @@
+<?php
+
+require_once 'authentication.php';
+
+$page = "sheets";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/bootbox-fix.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="js/rangeslider/rangeslider.css">
+    <title>PGLU - Tabulation System</title>
+  </head>
+  <body class="app sidebar-mini sidenav-closed" ng-app="sheets" ng-controller="sheetsCtrl" account-profile>
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index.html"><img class="page-logo" src="logo/ts.png"><span class="page-logo-text">Tabulation</span></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right" drop-down></ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{profile.picture}}" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">{{profile.user}}</p>
+          <p class="app-sidebar__user-designation">{{profile.description}}</p>
+        </div>
+      </div>
+	  
+	<?php require_once 'sidebar-menu.php'; ?>
+    </aside>
+	
+    <main class="app-content">
+	
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-calculator"></i> Scores Sheets ({{activeEvent.description}})</h1>
+          <p>{{views.title}}</p>		  
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-calculator fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="sheets.html">Scores Sheets</a></li>
+        </ul>
+      </div>
+	  
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tile">		  
+					<h3 class="tile-title">Portions<i class="fa fa-refresh float-right" data-toggle="tooltip" data-placement="left" title="" data-original-title="Reload Portions" style="cursor: pointer;" ng-click="sheets.reload(this)"></i></h3>
+					<div class="clearfix"></div>
+					<hr>
+					<div class="tile-body">
+						<ul class="nav nav-tabs">
+							<li class="nav-item" ng-repeat="p in portions"><a class="nav-link" ng-class="{'active': $index==activeTabs.portion}" data-toggle="tab" href="#portion{{$index}}" aria-expanded="true" ng-click="activeTabs.portion=$index">{{p.description}}</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane fade" ng-repeat="p in portions" ng-class="{'active': $index==activeTabs.portion, 'show': $index==activeTabs.portion}" id="portion{{$index}}">
+								<div class="float-right" style="margin-top: 15px; margin-right: 10px; margin-bottom: 15px;"><button class="btn btn-danger" ng-click="sheets.update(this,p)">{{(!views.edit)?'Edit':'Update'}}</button><button ng-show="views.edit" class="btn btn-info" style="margin-left: 5px;" ng-click="views.edit=false">Cancel</button></div>
+								<div class="clearfix"></div>
+								<div class="tile">
+									<div class="tile-body">
+										<form name="formHolder.sheet{{p.id}}">
+											<ul class="nav nav-tabs" role="tablist">
+											  <li class="nav-item" ng-repeat="judge in p.judges">
+												<a class="nav-link" ng-class="{'active': $index==0}" data-toggle="tab" href="#judge{{p.id}}{{$index}}" role="tab" aria-controls="judge{{p.id}}{{$index}}">{{judge.fullname}}</a>
+											  </li>
+											</ul>
+											<div class="tab-content" style="margin-top: 15px;">
+												<div ng-repeat="judge in p.judges" class="tab-pane fade" ng-class="{'show': $index==0, 'active': $index==0}" id="judge{{p.id}}{{$index}}" role="tabpanel" aria-labelledby="judge{{p.id}}{{$index}}-tab">
+													<div class="row">
+														<div class="col-md-4 offset-md-8">
+															<form class="form-inline">
+																<input class="form-control mr-sm-2" type="search" placeholder="Search" ng-model="judge.search" aria-label="Search">
+															</form>
+														</div>
+													</div>
+													<table class="table table-bordered" style="margin-top: 15px;">
+														<thead>
+															<tr>
+																<th ng-repeat="th in judge.table_header">
+																	<a ng-show="th.has_extract_portion" href="javascript:;" class="badge badge-pill badge-danger float-right" style="margin-left: 5px;"><i class="fa fa-check"></i></a>
+																	{{th.th}}
+																</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="contestant in judge.contestants | filter:judge.search">
+																<td>{{contestant.contestant_no}}</td><td><strong>{{contestant.description}}</strong> ({{contestant.contestant_name}})</td>
+																<td ng-repeat="score in contestant.scores">
+																	<input type="number" class="form-control" ng-class="{'is-invalid': formHolder.sheet{{p.id}}.score{{score.score_id}}['$invalid']}" name="score{{score.score_id}}" ng-model="score.score" ng-disabled="!views.edit || score.extract_portion != null" required>
+																	<div ng-show="formHolder.sheet{{p.id}}.score{{score.score_id}}['$invalid']" class="form-control-feedback" style="margin-top: 5px;">{{score.error_message}}</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="float-right" style="margin-right: 10px;"><button class="btn btn-danger" ng-click="sheets.update(this,p)">{{(!views.edit)?'Edit':'Update'}}</button><button ng-show="views.edit" class="btn btn-info" style="margin-left: 5px;" ng-click="views.edit=false">Cancel</button></div>
+								<div class="clearfix"></div>								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>
+	<script src="js/growl/jquery.bootstrap-growl.min.js"></script>	
+	<script src="js/blockui/jquery.blockUI.js"></script>	
+	<script src="jspdf/jspdf.min.js"></script>	
+	<script src="jspdf/jspdf.plugin.autotable.js"></script>	
+	<script src="js/rangeslider/rangeslider.js"></script>
+    <!-- Page specific javascripts-->
+  <!-- angularjs -->
+  <script src="angular/angular.min.js"></script>
+  <script src="angular/angular-route.min.js"></script>
+  <script src="angular/angular-sanitize.min.js"></script>
+  <script src="angular/ui-bootstrap-tpls-3.0.0.min.js"></script>
+  <!-- modules -->
+  <script src="modules/bootstrap-modal.js"></script>
+  <script src="modules/account.js"></script>
+  <script src="modules/validate.js"></script>
+  <script src="modules/growl.js"></script>
+  <script src="modules/blockui.js"></script>
+  <script src="modules/tooltip.js"></script>
+  <script src="modules/notifications.js"></script>
+  <script src="modules/jspdf.js"></script>
+  <script src="modules/active-event.js"></script>
+  <script src="modules/sheets.js"></script>
+  <!-- controller -->
+  <script src="controllers/sheets.js"></script>
+  </body>
+</html>

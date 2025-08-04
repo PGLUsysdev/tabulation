@@ -1,0 +1,1 @@
+        <li ng-show="profile.description=='Tabulator'"><a class="app-menu__item<?=($page=="people_choice")?" active":"";?>" href="people-choice.html"><i class="app-menu__icon fa fa-trophy"></i><span class="app-menu__label">People's Choice</span></a></li>		

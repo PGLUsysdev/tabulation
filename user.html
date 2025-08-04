@@ -1,0 +1,191 @@
+<?php
+
+require_once 'authentication.php';
+
+$page = "user";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/bootbox-fix.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>PGLU - Tabulation System</title>
+  </head>
+  <body class="app sidebar-mini" ng-app="user" ng-controller="userCtrl" account-profile>
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index.html"><img class="page-logo" src="logo/ts.png"><span class="page-logo-text">Tabulation</span></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right" drop-down></ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{profile.picture}}" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">{{profile.user}}</p>
+          <p class="app-sidebar__user-designation">{{profile.description}}</p>
+        </div>
+      </div>
+	  
+	<?php require_once 'sidebar-menu.php'; ?>
+    </aside>
+	
+    <main class="app-content">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-user"></i> User ({{activeEvent.description}})</h1>
+          <p>{{views.option}}</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item"><a href="user.html">User</a></li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+		  <div class="float-right">
+			<i class="fa fa-edit fa-lg" style="cursor: pointer; margin-right: 8px;" ng-click="app.edit(this)" ng-show="controls.btns.edit"></i>
+			<i class="fa fa-plus fa-lg" style="cursor: pointer;" ng-click="app.add(this)" ng-show="controls.btns.add"></i>
+		  </div>
+		  <div class="clearfix"></div>		  
+		  <hr>		  
+			<form name="form.user">
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Event</label>
+						<select class="form-control" ng-class="{'is-invalid': form.user.tabulation_event.$touched && form.user.tabulation_event.$invalid}" name="tabulation_event" ng-model="user.tabulation_event" ng-options="event.description for event in events track by event.id" ng-disabled="controls.btns.ok" required></select>
+						<div class="form-control-feedback" ng-show="form.user.tabulation_event.$touched && form.user.tabulation_event.$invalid">Event is required</div>
+					  </div>				  
+				  </div>
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Group</label>
+						<select class="form-control" ng-class="{'is-invalid': form.user.user_group.$touched && form.user.user_group.$invalid}" name="user_group" ng-model="user.user_group" ng-options="group.group_name for group in groups track by group.id" ng-disabled="controls.btns.ok" required></select>
+						<div class="form-control-feedback" ng-show="form.user.user_group.$touched && form.user.user_group.$invalid">Group is required</div>
+					  </div>				  
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>First Name</label>
+						<input class="form-control" ng-class="{'is-invalid': form.user.first_name.$touched && form.user.first_name.$invalid}" type="text" name="first_name" ng-model="user.first_name" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.user.first_name.$touched && form.user.first_name.$invalid">First Name is required</div>						
+					  </div>				  
+				  </div>
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Last Name</label>
+						<input class="form-control" ng-class="{'is-invalid': form.user.last_name.$touched && form.user.last_name.$invalid}" type="text" name="last_name" ng-model="user.last_name" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.user.last_name.$touched && form.user.last_name.$invalid">Last Name is required</div>						
+					  </div>				  
+				  </div>				  
+				</div>
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Gender</label>
+						<select class="form-control" ng-class="{'is-invalid': form.user.gender.$touched && form.user.gender.$invalid}" name="gender" ng-model="user.gender" ng-disabled="controls.btns.ok" required>
+							<option value="Male">Male</option>
+							<option value="Female">Female</option>
+						</select>
+						<div class="form-control-feedback" ng-show="form.user.gender.$touched && form.user.gender.$invalid">Gender is required</div>						
+					  </div>				  
+				  </div>
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Username</label>
+						<input class="form-control" ng-class="{'is-invalid': form.user.username.$touched && form.user.username.$invalid}" type="text" name="username" ng-model="user.username" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.user.username.$touched && form.user.username.$invalid">Username is required</div>						
+					  </div>				  
+				  </div>
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Password</label>
+						<input class="form-control" ng-class="{'is-invalid': form.user.password.$touched && form.user.password.$invalid}" type="password" name="password" ng-model="user.password" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.user.password.$touched && form.user.password.$invalid">Password is required</div>						
+					  </div>				  
+				  </div>				  
+				</div>
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>IP Address</label>
+						<input class="form-control" type="text" name="ip_address" ng-model="user.ip_address" ng-disabled="controls.btns.ok">
+					  </div>				  
+				  </div>
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>IP is host?</label>
+						<div class="toggle lg">
+						  <label>
+							<input type="checkbox" ng-model="user.host_device" ng-checked="user.host_device" ng-disabled="controls.btns.ok"><span class="button-indecator"></span>
+						  </label>
+						</div>
+					  </div>				  
+				  <div>
+				</div>
+				<hr>
+				<button class="btn btn-info float-right" type="button" ng-click="app.close()">Close</button>
+				<button class="btn btn-danger float-right" type="button" ng-click="app.cancel(this)" ng-disabled="controls.btns.cancel" style="margin-right: 5px;">Cancel</button>
+				<button class="btn btn-success float-right" type="button" ng-click="app.save(this)" ng-disabled="controls.btns.ok" style="margin-right: 5px;">Save</button>
+				<div class="clearfix"></div>
+			</form>
+          </div>
+        </div>
+      </div>     
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>
+	<script src="js/growl/jquery.bootstrap-growl.min.js"></script>	
+    <!-- Page specific javascripts-->
+  <!-- angularjs -->
+  <script src="angular/angular.min.js"></script>  
+  <script src="angular/angular-route.min.js"></script>  
+  <script src="angular/ui-bootstrap-tpls-3.0.0.min.js"></script> 
+  <!-- modules -->
+  <script src="modules/bootstrap-modal.js"></script>
+  <script src="modules/account.js"></script>
+  <script src="modules/validate.js"></script>
+  <script src="modules/growl.js"></script>
+  <script src="modules/active-event.js"></script>
+  <script src="modules/user.js"></script>
+  <!-- controller -->
+  <script src="controllers/user.js"></script>
+  </body>
+</html>

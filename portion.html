@@ -1,0 +1,347 @@
+<?php
+
+require_once 'authentication.php';
+
+$page = "portion";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/bootbox-fix.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <title>PGLU - Tabulation System</title>
+  </head>
+  <body class="app sidebar-mini" ng-app="portion" ng-controller="portionCtrl" account-profile>
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="index.html"><img class="page-logo" src="logo/ts.png"><span class="page-logo-text">Tabulation</span></a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right" drop-down></ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+	
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{profile.picture}}" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">{{profile.portion}}</p>
+          <p class="app-sidebar__user-designation">{{profile.description}}</p>
+        </div>
+      </div>
+	  
+	<?php require_once 'sidebar-menu.php'; ?>
+    </aside>
+	
+    <main class="app-content">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa fa-list-ul"></i> Portion ({{activeEvent.description}})</h1>
+          <p>{{views.option}}</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">Portions</li>
+          <li class="breadcrumb-item"><a href="portion.html">Portion</a></li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+		  <div class="float-right">
+			<i class="fa fa-edit fa-lg" style="cursor: pointer; margin-right: 8px;" ng-click="app.edit(this)" ng-show="controls.btns.edit"></i>
+			<i class="fa fa-plus fa-lg" style="cursor: pointer;" ng-click="app.add(this)" ng-show="controls.btns.add"></i>
+		  </div>
+		  <div class="clearfix"></div>		  
+		  <hr>		  
+			<form name="form.portion" novalidate autocomplete="false">
+				<div class="row">
+				  <div class="col-lg-4 offset-lg-8">
+					  <div class="form-group float-right">
+						<label>Active</label>
+						<div class="toggle lg">
+						  <label>
+							<input type="checkbox" ng-model="portion.is_shown" ng-checked="portion.is_shown" ng-disabled="controls.btns.ok"><span class="button-indecator"></span>
+						  </label>
+						</div>						
+					  </div>	  
+				  </div>				
+				</div>
+				<hr>			
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Event</label>
+						<select class="form-control" ng-class="{'is-invalid': form.portion.event_id.$touched && form.portion.event_id.$invalid}" name="event_id" ng-model="portion.event_id" ng-options="event.description for event in events track by event.id" ng-disabled="controls.btns.ok" required></select>
+						<div class="form-control-feedback" ng-show="form.portion.event_id.$touched && form.portion.event_id.$invalid">Event is required</div>
+					  </div>				  
+				  </div>				
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Description</label>
+						<input type="text" class="form-control" ng-class="{'is-invalid': form.portion.description.$touched && form.portion.description.$invalid}" name="description" ng-model="portion.description" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.portion.description.$touched && form.portion.description.$invalid">Description is required</div>
+					  </div>				  
+				  </div>
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>No of winners</label>
+						<input type="number" class="form-control" ng-class="{'is-invalid': form.portion.winners.$touched && form.portion.winners.$invalid}" name="winners" ng-model="portion.winners" ng-disabled="controls.btns.ok" required>
+						<div class="form-control-feedback" ng-show="form.portion.winners.$touched && form.portion.winners.$invalid">No of winners is required</div>
+					  </div>				  
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Remarks</label>
+						<input type="text" class="form-control" name="remarks" ng-model="portion.remarks" ng-disabled="controls.btns.ok">
+					  </div>				  
+				  </div>				
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Chairman of the board of judges</label>
+						<select class="form-control" ng-model="portion.event_chairman" ng-options="u.full_name for u in users track by u.id" ng-disabled="controls.btns.ok"></select>
+					  </div>				  
+				  </div>
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Official Tabulator</label>
+						<select class="form-control" ng-model="portion.event_tabulator" ng-options="u.full_name for u in users track by u.id" ng-disabled="controls.btns.ok"></select>
+					  </div>				  
+				  </div>				
+				</div>
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Results</label>
+						<input type="text" class="form-control" name="results" ng-model="portion.results" ng-disabled="controls.btns.ok">
+					  </div>				  
+				  </div>				
+				</div>
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Ranking Order ({{(portion.rank_order)?'Ascending':'Descending'}})</label>
+						<div class="toggle lg">
+						  <label>
+							<input type="checkbox" ng-model="portion.rank_order" ng-checked="portion.rank_order" ng-disabled="controls.btns.ok"><span class="button-indecator"></span>
+						  </label>
+						</div>						
+					  </div>
+				  </div>				
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Use base score?</label>
+						<div class="toggle lg">
+						  <label>
+							<input type="checkbox" ng-model="portion.use_base_score" ng-checked="portion.use_base_score" ng-disabled="controls.btns.ok"><span class="button-indecator"></span>
+						  </label>
+						</div>						
+					  </div>
+				  </div>
+				  <div class="col-lg-4" ng-show="portion.use_base_score">
+					  <div class="form-group">
+						<label>Base score (%)</label>
+						<input type="number" class="form-control" ng-class="{'is-invalid': form.portion.base_score.$touched && form.portion.base_score.$invalid}" name="base_score" ng-model="portion.base_score" ng-disabled="controls.btns.ok" ng-required="portion.use_base_score">
+						<div class="form-control-feedback" ng-show="form.portion.base_score.$touched && form.portion.base_score.$invalid">Base score is required</div>
+					  </div>				  
+				  </div>					
+				</div>
+				<div class="row">
+				  <div class="col-lg-4">
+					  <div class="form-group">
+						<label>Score by rate?</label>
+						<div class="toggle lg">
+						  <label>
+							<input type="checkbox" ng-model="portion.score_by_rate" ng-checked="portion.score_by_rate" ng-disabled="controls.btns.ok"><span class="button-indecator"></span>
+						  </label>
+						</div>						
+					  </div>	  
+				  </div>
+				  <div class="col-lg-4" ng-show="portion.score_by_rate">
+					  <div class="form-group">
+						<label>Rating (min)</label>
+						<input type="number" class="form-control" ng-class="{'is-invalid': form.portion.rating_min.$touched && form.portion.rating_min.$invalid}" name="rating_min" ng-model="portion.rating_min" ng-disabled="controls.btns.ok" ng-required="portion.score_by_rate">
+						<div class="form-control-feedback" ng-show="form.portion.rating_min.$touched && form.portion.rating_min.$invalid">Minimum rating is required</div>
+					  </div>				  
+				  </div>				  
+				  <div class="col-lg-4" ng-show="portion.score_by_rate">
+					  <div class="form-group">
+						<label>Rating (max)</label>
+						<input type="number" class="form-control" ng-class="{'is-invalid': form.portion.rating_max.$touched && form.portion.rating_max.$invalid}" name="rating_max" ng-model="portion.rating_max" ng-disabled="controls.btns.ok" ng-required="portion.score_by_rate">
+						<div class="form-control-feedback" ng-show="form.portion.rating_max.$touched && form.portion.rating_max.$invalid">Maximum rating is required</div>
+					  </div>				  
+				  </div>
+				</div>
+				<hr>
+				<h3 class="tile-title">Criteria</h3>
+				<button type="button" class="btn btn-primary float-right" ng-click="app.criteria.add(this)" ng-disabled="controls.btns.ok">Add</button>
+				<div class="clearfix"></div>
+				<div class="table-responsive" style="margin-top: 20px;">
+				  <table class="table">
+					<thead>
+					  <tr>
+						<th>#</th>
+						<th>Description</th>
+						<th>Percentage</th>
+						<th>Minimum</th>
+						<th>Extract From Portion</th>
+						<th>Portion Criterion</th>
+						<th>Actions</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr ng-repeat="c in portion.criteria">
+						<td>{{(c.id>0)?c.id:$index+1}}</td>
+						<td>
+							<input type="text" class="form-control" name="description{{$index}}" ng-model="c.description" ng-class="{'is-invalid': form.portion.description{{$index}}['$touched'] && form.portion.description{{$index}}['$invalid']}" ng-disabled="c.disabled" required>
+							<div class="form-control-feedback" ng-show="form.portion.description{{$index}}['$touched'] && form.portion.description{{$index}}['$invalid']">Description is required</div>
+						</td>
+						<td>
+							<input type="number" class="form-control" name="percentage{{$index}}" ng-model="c.percentage" ng-class="{'is-invalid': form.portion.percentage{{$index}}['$touched'] && form.portion.percentage{{$index}}['$invalid']}"  ng-disabled="c.disabled" required>
+							<div class="form-control-feedback" ng-show="form.portion.percentage{{$index}}['$touched'] && form.portion.percentage{{$index}}['$invalid']">Percentage is required</div>
+						</td>
+						<td>
+							<input type="number" class="form-control" ng-model="c.minimum" ng-disabled="c.disabled">
+						</td>
+						<td>
+							<select class="form-control" ng-model="c.extract_portion" ng-options="por.description for por in portions_criteria track by por.id" ng-disabled="c.disabled"></select>
+						</td>					
+						<td>
+							<button type="button" class="btn btn-primary" ng-click="app.criteria.edit(this,c)" ng-disabled="controls.btns.ok"><i class="fa" ng-class="{'fa-pencil': c.disabled, 'fa-check': !c.disabled}"></i></button>
+							<button type="button" class="btn btn-danger" ng-click="app.criteria.delete(this,c)" ng-disabled="controls.btns.ok"><i class="fa fa-times"></i></button>
+						</td>
+					  </tr>
+					</tbody>
+				  </table>
+				</div>
+				<hr>
+				<h3 class="tile-title">Places</h3>
+				<button type="button" class="btn btn-primary float-right" ng-click="app.places.add(this)" ng-disabled="controls.btns.ok">Add</button>
+				<div class="clearfix"></div>
+				<div class="table-responsive" style="margin-top: 20px;">
+				  <table class="table">
+					<thead>
+					  <tr>
+						<th>#</th>
+						<th>Rank</th>
+						<th>Description</th>
+						<th>Actions</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr ng-repeat="p in portion.places">
+						<td>{{(p.id>0)?p.id:$index+1}}</td>
+						<td>
+							<input type="number" class="form-control" name="rank{{$index}}" ng-model="p.rank" ng-class="{'is-invalid': form.portion.rank{{$index}}['$touched'] && form.portion.rank{{$index}}['$invalid']}" ng-disabled="p.disabled" required>
+							<div class="form-control-feedback" ng-show="form.portion.rank{{$index}}['$touched'] && form.portion.rank{{$index}}['$invalid']">Rank is required</div>
+						</td>
+						<td>
+							<input type="text" class="form-control" name="place_description{{$index}}" ng-model="p.description" ng-class="{'is-invalid': form.portion.place_description{{$index}}['$touched'] && form.portion.place_description{{$index}}['$invalid']}" ng-disabled="p.disabled" required>
+							<div class="form-control-feedback" ng-show="form.portion.place_description{{$index}}['$touched'] && form.portion.place_description{{$index}}['$invalid']">Description is required</div>
+						</td>					
+						<td>
+							<button type="button" class="btn btn-primary" ng-click="app.places.edit(this,p)" ng-disabled="controls.btns.ok"><i class="fa" ng-class="{'fa-pencil': p.disabled, 'fa-check': !p.disabled}"></i></button>
+							<button type="button" class="btn btn-danger" ng-click="app.places.delete(this,p)" ng-disabled="controls.btns.ok"><i class="fa fa-times"></i></button>
+						</td>
+					  </tr>
+					</tbody>
+				  </table>
+				</div>				
+				<hr>
+				<h3 class="tile-title">Judges</h3>
+				<div class="row">
+					<div class="col-lg-4">
+						<form class="form-inline float-right">
+							<input class="form-control mr-sm-2" type="search" placeholder="Search" ng-model="search" aria-label="Search">
+						</form>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<table class="table table-striped" style="margin-top: 25px;">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Gender</th>
+							<th>Judge in this portion?</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="pj in portion.judges | filter:search">
+							<td>{{$index+1}}</td>
+							<td>{{pj.judge_fullname}}</td>
+							<td>{{pj.gender}}</td>
+							<td>
+								<div class="toggle lg">
+								  <label>
+									<input type="checkbox" ng-model="pj.status" ng-checked="pj.status" ng-disabled="controls.btns.ok"><span class="button-indecator"></span>
+								  </label>
+								</div>							
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr>
+				<button class="btn btn-info float-right" type="button" ng-click="app.close()">Close</button>
+				<button class="btn btn-danger float-right" type="button" ng-click="app.cancel(this)" ng-disabled="controls.btns.cancel" style="margin-right: 5px;">Cancel</button>
+				<button class="btn btn-success float-right" type="button" ng-click="app.save(this)" ng-disabled="controls.btns.ok" style="margin-right: 5px;">Save</button>				
+				<div class="clearfix"></div>				
+			</form>
+          </div>
+        </div>
+      </div>     
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>
+	<script src="js/growl/jquery.bootstrap-growl.min.js"></script>
+	<script src="jspdf/jspdf.min.js"></script>	
+	<!-- <script src="jspdf/jspdf.plugin.autotable.js"></script>	 -->
+	<script src="jspdf/jspdf.plugin.autotable-3.2.11.js"></script>	
+    <!-- Page specific javascripts-->
+  <!-- angularjs -->
+  <script src="angular/angular.min.js"></script>  
+  <script src="angular/angular-route.min.js"></script>  
+  <script src="angular/ui-bootstrap-tpls-3.0.0.min.js"></script> 
+  <!-- modules -->
+  <script src="modules/bootstrap-modal.js"></script>
+  <script src="modules/account.js"></script>
+  <script src="modules/validate.js"></script>
+  <script src="modules/growl.js"></script>
+  <script src="modules/jspdf.js"></script>    
+  <script src="modules/active-event.js"></script>
+  <script src="modules/portion.js"></script>
+  <!-- controller -->
+  <script src="controllers/portion.js"></script>
+  </body>
+</html>
