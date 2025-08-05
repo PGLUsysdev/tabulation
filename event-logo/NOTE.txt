@@ -1,0 +1,6 @@
+Logo Size
+
+width: 900
+height: 471
+
+Filename must be the event id
