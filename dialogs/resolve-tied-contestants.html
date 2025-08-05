@@ -1,0 +1,13 @@
+<h5><small class="text-muted">Portion:</small> {{resolveTiedContestants.description}}</h5>
+<hr>
+<h5>Contestants</h5>
+<table class="table table-striped">
+	<thead>
+		<tr><th>No</th><th>Description</th><th>Average</th><th>Rank</th><th>Adj</th><th></th></tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="tc in resolveTiedContestants.contestants">
+			<td>{{tc.contestant_no}}</td><td>{{tc.description}}</td><td>{{tc.average}}</td><td>{{tc.rank}}</td><td>{{tc.adj}}</td><td><i class="fa fa-plus" style="cursor: pointer;" ng-click="tabulator.iScore(tc)"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-minus" style="cursor: pointer;" ng-click="tabulator.dScore(tc)"></i></td>
+		</tr>
+	</tbody>
+</table>

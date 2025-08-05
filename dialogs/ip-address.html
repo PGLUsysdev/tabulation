@@ -1,0 +1,7 @@
+<form name="form.network" novalidate autocomplete="false">
+  <div class="form-group">
+	<label>IP Address</label>
+	<input type="text" class="form-control" ng-class="{'is-invalid': form.network.ip_address.$touched && form.network.ip_address.$invalid}" name="ip_address" ng-model="monitor.ip_address" required>
+	<div class="form-control-feedback" ng-show="form.network.ip_address.$touched && form.network.ip_address.$invalid">IP Address is required</div>
+  </div>
+</form>

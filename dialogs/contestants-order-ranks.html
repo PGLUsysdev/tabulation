@@ -1,0 +1,27 @@
+<form class="form-inline">
+	<input class="form-control mr-sm-6" type="search" placeholder="Search" ng-model="cco_search" aria-label="Search">
+</form>
+<div class="row">
+	<div class="col-lg-12">
+		<table class="table table-striped" style="margin-top: 25px;">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Id</th>
+					<th>Contestant</th>
+					<th>Order</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="cco in portion_contestants | filter:cco_search">
+					<td>{{cco.contestant_no}}</td>
+					<td>{{cco.contestant_id}}</td>
+					<td>{{cco.description}} ({{cco.contestant_name}})</td>
+					<td>
+						<input type="number" class="form-control" ng-model="cco.contestant_rank">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

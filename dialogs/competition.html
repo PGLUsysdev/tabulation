@@ -1,0 +1,153 @@
+<form name="form.competition" novalidate autocomplete="false">
+	<div class="row">
+	  <div class="col-lg-4">
+		<i ng-show="!views.new" class="fa fa-lg" ng-class="{'fa-edit': controls.btns.edit, 'fa-ban': !controls.btns.edit}" style="cursor: pointer;" ng-click="competitionsM.edit(this)"></i>		
+	  </div>
+	  <div class="col-lg-4 offset-lg-8">
+		  <div class="form-group float-right">
+			<label>Active</label>
+			<div class="toggle lg">
+			  <label>
+				<input type="checkbox" ng-model="competition.is_shown" ng-checked="competition.is_shown" ng-disabled="controls.btns.edit"><span class="button-indecator"></span>
+			  </label>
+			</div>						
+		  </div>	  
+	  </div>				
+	</div>
+	<hr>			
+	<div class="row">
+	  <div class="col-lg-3">
+		  <div class="form-group">
+			<label>Event</label>
+			<select class="form-control" ng-class="{'is-invalid': form.competition.event_id.$touched && form.competition.event_id.$invalid}" name="event_id" ng-model="competition.event_id" ng-options="event.description for event in events track by event.id" ng-disabled="controls.btns.edit" required></select>
+			<div class="form-control-feedback" ng-show="form.competition.event_id.$touched && form.competition.event_id.$invalid">Event is required</div>
+		  </div>
+	  </div>				
+	  <div class="col-lg-3">
+		  <div class="form-group">
+			<label>Description</label>
+			<input type="text" class="form-control" ng-class="{'is-invalid': form.competition.description.$touched && form.competition.description.$invalid}" name="description" ng-model="competition.description" ng-disabled="controls.btns.edit" required>
+			<div class="form-control-feedback" ng-show="form.competition.description.$touched && form.competition.description.$invalid">Description is required</div>
+		  </div>				  
+	  </div>
+	  <div class="col-lg-3">
+		  <div class="form-group">
+			<label>No of winners</label>
+			<input type="number" class="form-control" ng-class="{'is-invalid': form.competition.winners.$touched && form.competition.winners.$invalid}" name="winners" ng-model="competition.winners" ng-disabled="controls.btns.edit" required>
+			<div class="form-control-feedback" ng-show="form.competition.winners.$touched && form.competition.winners.$invalid">No of winners is required</div>
+		  </div>  
+	  </div>
+	  <div class="col-lg-3">
+		  <div class="form-group">
+			<label>Remarks</label>
+			<input type="text" class="form-control" name="remarks" ng-model="competition.remarks" ng-disabled="controls.btns.edit">
+		  </div>  
+	  </div>				
+	</div>				
+	<hr>
+	<h3 class="tile-title">Rounds</h3>
+	<button type="button" class="btn btn-primary float-right" ng-click="competitionsM.rounds.add(this)" ng-disabled="controls.btns.edit">Add</button>
+	<div class="clearfix"></div>
+	<div class="table-responsive" style="margin-top: 20px;">
+	  <table class="table">
+		<thead>
+		  <tr>
+			<th>#</th>
+			<th>Round</th>
+			<th>Percentage</th>
+			<th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr ng-repeat="cr in competition.rounds">
+			<td>{{(cr.id>0)?cr.id:$index+1}}</td>
+			<td>
+				<select class="form-control" name="round_id{{$index}}" ng-model="cr.round_id" ng-options="rou.description for rou in rounds track by rou.id" ng-class="{'is-invalid': form.competition.round_id{{$index}}['$touched'] && form.competition.round_id{{$index}}['$invalid']}" ng-disabled="cr.disabled" required></select>
+				<div class="form-control-feedback" ng-show="form.competition.round_id{{$index}}['$touched'] && form.competition.round_id{{$index}}['$invalid']">Round is required</div>
+			</td>
+			<td>
+				<input type="number" class="form-control" name="percentage{{$index}}" ng-model="cr.percentage" ng-class="{'is-invalid': form.competition.percentage{{$index}}['$touched'] && form.competition.percentage{{$index}}['$invalid']}" ng-disabled="cr.disabled" required>
+				<div class="form-control-feedback" ng-show="form.competition.percentage{{$index}}['$touched'] && form.competition.percentage{{$index}}['$invalid']">Percentage is required</div>
+			</td>						
+			<td>
+				<button type="button" class="btn btn-primary" ng-click="competitionsM.rounds.edit(this,cr)" ng-disabled="controls.btns.ok"><i class="fa" ng-class="{'fa-pencil': cr.disabled, 'fa-check': !cr.disabled}"></i></button>
+				<button type="button" class="btn btn-danger" ng-click="competitionsM.rounds.delete(this,cr)" ng-disabled="controls.btns.ok"><i class="fa fa-times"></i></button>
+			</td>
+		  </tr>
+		</tbody>
+	  </table>
+	</div>
+	<hr>
+	<h3 class="tile-title">Contestants</h3>
+	<div class="row">
+		<div class="col-lg-6 offset-lg-6">
+			<div class="input-group mb-3">
+			  <input type="text" class="form-control" placeholder="Search" ng-model="searchContestant">
+			  <div class="input-group-append">
+				<span class="input-group-text"><i class="fa fa-search"></i></span>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>
+					<div class="toggle lg">
+					  <label>
+						<input ng-disabled="controls.btns.edit" type="checkbox" ng-model="addAllContestants" ng-checked="addAllContestants" ng-change="competitionsM.toggleAddAllContestants(this)"><span class="button-indecator"></span>
+					  </label>
+					</div>			
+				</th>
+				<th>No</th><th>Name</th><th>Description</th></tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="c in contestants | filter:searchContestant">
+			<td>
+				<div class="toggle lg">
+				  <label>
+					<input ng-disabled="controls.btns.edit" type="checkbox" ng-model="c.participant" ng-checked="c.participant" ng-change="competitionsM.addAllContestantsToggler(this,true)"><span class="button-indecator"></span>
+				  </label>
+				</div>
+			</td>
+			<td>{{c.contestant_no}}</td><td>{{c.contestant_name}}</td><td>{{c.description}}</td></tr>
+		</tbody>
+	</table>
+	<hr>
+	<h3 class="tile-title">Places</h3>
+	<button type="button" class="btn btn-primary float-right" ng-click="competitionsM.places.add(this)" ng-disabled="controls.btns.edit">Add</button>
+	<div class="clearfix"></div>
+	<div class="table-responsive" style="margin-top: 20px;">
+	  <table class="table">
+		<thead>
+		  <tr>
+			<th>#</th>
+			<th>Rank</th>
+			<th>Description</th>
+			<th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr ng-repeat="cp in competition.places">
+			<td>{{(cp.id>0)?cp.id:$index+1}}</td>
+			<td>
+				<input type="number" class="form-control" name="rank{{$index}}" ng-model="cp.rank" ng-class="{'is-invalid': form.competition.rank{{$index}}['$touched'] && form.competition.rank{{$index}}['$invalid']}" ng-disabled="cp.disabled" required>
+				<div class="form-control-feedback" ng-show="form.competition.rank{{$index}}['$touched'] && form.competition.rank{{$index}}['$invalid']">Rank is required</div>
+			</td>
+			<td>
+				<input type="text" class="form-control" name="place_description{{$index}}" ng-model="cp.description" ng-class="{'is-invalid': form.competition.place_description{{$index}}['$touched'] && form.competition.place_description{{$index}}['$invalid']}" ng-disabled="cp.disabled" required>
+				<div class="form-control-feedback" ng-show="form.competition.place_description{{$index}}['$touched'] && form.competition.place_description{{$index}}['$invalid']">Description is required</div>
+			</td>					
+			<td>
+				<button type="button" class="btn btn-primary" ng-click="competitionsM.places.edit(this,cp)" ng-disabled="controls.btns.ok"><i class="fa" ng-class="{'fa-pencil': cp.disabled, 'fa-check': !cp.disabled}"></i></button>
+				<button type="button" class="btn btn-danger" ng-click="competitionsM.places.delete(this,cp)" ng-disabled="controls.btns.ok"><i class="fa fa-times"></i></button>
+			</td>
+		  </tr>
+		</tbody>
+	  </table>
+	</div>				
+	<hr>
+	<button class="btn btn-success float-right" type="button" ng-click="competitionsM.save(this)" ng-disabled="controls.btns.edit">Save</button>				
+	<div class="clearfix"></div>				
+</form>

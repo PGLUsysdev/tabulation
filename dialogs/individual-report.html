@@ -1,0 +1,55 @@
+<form name="form.report" novalidate autocomplete="false">
+	<div class="row">
+	  <div class="col-lg-12">
+		<div class="pull-right"><i ng-show="!views.new" class="fa fa-lg" ng-class="{'fa-edit': controls.btns.edit, 'fa-ban': !controls.btns.edit}" style="cursor: pointer;" ng-click="individual.edit(this)"></i></div>
+		<div class="clearfix"></div>		
+	  </div>
+	</div>
+	<div class="row" style="margin-top: 10px;">
+	  <div class="col-lg-12">
+		  <div class="form-group">
+			<label>Search Contestant</label>
+			<input type="text" class="form-control" name="search" ng-model="views.search"  uib-typeahead="contestant.description for contestant in views.contestants | filter:$viewValue" typeahead-on-select="individual.search(this, $item, $model, $label, $event)" ng-disabled="controls.btns.edit">
+		  </div>				  
+	  </div>	
+	</div>
+	<div class="row">
+	  <div class="col-lg-12">
+		  <div class="form-group">
+			<label>Description</label>
+			<input type="text" class="form-control" ng-class="{'is-invalid': form.report.description.$touched && form.report.description.$invalid}" name="description" ng-model="report.description" ng-disabled="controls.btns.edit" required>
+			<div class="form-control-feedback" ng-show="form.report.description.$touched && form.report.description.$invalid">Description is required</div>
+		  </div>				  
+	  </div>
+	</div>
+	<div class="row">	  
+	  <div class="col-lg-12">
+		  <div class="form-group">
+			<label>No</label>
+			<input type="text" class="form-control" ng-class="{'is-invalid': form.report.contestant_no.$touched && form.report.contestant_no.$invalid}" name="contestant_no" ng-model="report.contestant_no" ng-disabled="controls.btns.edit" required>
+			<div class="form-control-feedback" ng-show="form.report.contestant_no.$touched && form.report.contestant_no.$invalid">Contestant number is required</div>
+		  </div>				  
+	  </div>
+	</div>	
+	<div class="row">	  
+	  <div class="col-lg-12">
+		  <div class="form-group">
+			<label>Contestant</label>
+			<input type="text" class="form-control" ng-class="{'is-invalid': form.report.contestant.$touched && form.report.contestant.$invalid}" name="contestant" ng-model="report.contestant" ng-disabled="controls.btns.edit" required>
+			<div class="form-control-feedback" ng-show="form.report.contestant.$touched && form.report.contestant.$invalid">Contestant is required</div>
+		  </div>				  
+	  </div>
+	</div>
+	<div class="row">	  
+	  <div class="col-lg-12">
+		  <div class="form-group">
+			<label>Score</label>
+			<input type="text" class="form-control" ng-class="{'is-invalid': form.report.score.$touched && form.report.score.$invalid}" name="score" ng-model="report.score" ng-disabled="controls.btns.edit" required>
+			<div class="form-control-feedback" ng-show="form.report.score.$touched && form.report.score.$invalid">Score is required</div>
+		  </div>				  
+	  </div>	  
+	</div>
+	<hr>
+	<button class="btn btn-success float-right" type="button" ng-click="individual.save(this)" ng-disabled="controls.btns.edit">Save</button>				
+	<div class="clearfix"></div>	
+</form>

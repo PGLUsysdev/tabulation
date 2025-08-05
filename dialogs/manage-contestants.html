@@ -1,0 +1,30 @@
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Search" ng-model="searchContestant">
+  <div class="input-group-append">
+	<span class="input-group-text"><i class="fa fa-search"></i></span>
+  </div>
+</div>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>
+				<div class="toggle lg">
+				  <label>
+					<input type="checkbox" ng-model="addAllContestants" ng-checked="addAllContestants" ng-change="tabulator.toggleAddAllContestants(this,addAllContestants)"><span class="button-indecator"></span>
+				  </label>
+				</div>			
+			</th>
+			<th>No</th><th>Name</th><th>Description</th></tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="dc in contestants | filter:searchContestant">
+		<td>
+			<div class="toggle lg">
+			  <label>
+				<input type="checkbox" ng-model="dc.participant" ng-checked="dc.participant" ng-change="tabulator.addAllContestantsToggler(this,dc.participant)"><span class="button-indecator"></span>
+			  </label>
+			</div>
+		</td>
+		<td>{{dc.contestant_no}}</td><td>{{dc.contestant_name}}</td><td>{{dc.description}}</td></tr>
+	</tbody>
+</table>
